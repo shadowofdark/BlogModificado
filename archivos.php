@@ -89,6 +89,10 @@ mysqli_select_db($conexion,"wordpress")
 
         <!-- FIN BARRA DE NAVEGACION -->
 
+        <form action="ftp_enviar.php"method="post" enctype="multipart/form-data" style="margin-top:50px;" >
+		<div>Fichero: <input type="file" name="file" id="file" maxlength="45"></div>
+		<dif><input type="submit" name="enviar" value="enviar"/></div>
+	</form>
         
         
   <table class="table table-bordered" style="margin-top:60px; margin-left:10%;">
@@ -157,11 +161,7 @@ mysqli_select_db($conexion,"wordpress")
             </table>
             </td>
  
-<form action="ftp_enviar.php"method="post" enctype="multipart/form-data" >
-		<div>Fichero: <input type="file" name="file" id="file" maxlength="45"></div>
-		<dif><input type="submit" name="enviar" value="enviar"/></div>
-	</form>
-        
+
         
     </body>
 </html>
