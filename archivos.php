@@ -109,7 +109,7 @@ mysqli_select_db($conexion,"wordpress")
 
                 </tr >
                 <?php
-                $stmt = $db->prepare('SELECT * FROM files WHERE prop = :username');
+                $stmt = $db->prepare('SELECT * FROM files WHERE prop = '$usuario);
                 $stmt->execute(array(':username' => $_SESSION['user_login']));
                 $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 $long = count($row);
@@ -125,36 +125,7 @@ mysqli_select_db($conexion,"wordpress")
                     echo "</tr>";
                 }
                 
-                $stmt = $db->prepare('SELECT * FROM wp_users WHERE user_login != :username');
-                $stmt->execute(array(':username' => $_SESSION['user_login']));
-                $otros = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                $long = count($otros);
-                for ($i = 0; $i <= $long - 1; $i++) {
-                    $usern = $otros[$i]['user_login'];
-                    ?>
-                   <tr><td class="success">
-                   <span class="glyphicon glyphicon-paperclip"></span> Archivos de  <?php echo $usern?></td></tr>
-                    <?php
-                    echo' <tr>
-                                <td><strong>Archivo</strong></td>
-                                <td><strong>Fecha Upload</strong></td>
-                                <td><strong>Tamaño</strong></td>
-                                </tr >';
-                    $stmt = $db->prepare('SELECT * FROM files WHERE prop = :username');
-                    $stmt->execute(array(':username' => $usern));
-                    $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                    $long = count($row);
-                    for ($i = 0; $i <= $long - 1; $i++) {
-                        $id = $row[$i]['id_file'];
-                        echo "<tr>";
-                        echo "<td>" . $row[$i]['nombre'] . "</td>";
-                        echo "<td>" . $row[$i]['hora'] . "</td>";
-                        echo "<td>" . $row[$i]['peso'] . " Kb</td>";
-                        echo '<td></td>';
-                        echo '<td><a href="descargar.php?nombre=' . $row[$i]['nombre'] . '&usu=' . $usern . '"a>Descargar<td>';
-                        echo "</tr>";
-                    }
-                }
+               
                 ?>
 
                 </tr>
