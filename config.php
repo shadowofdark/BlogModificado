@@ -11,6 +11,12 @@ define('DBNAME','wordpress');
 //application address
 //define('DIR','http://domain.com/');
 //define('SITEEMAIL','noreply@domain.com');
+	private $_db;
+    function __construct($db) {
+        parent::__construct();
+        $this->_db = $db;
+    }
+
 try {
 	//create PDO connection
 	$db = new PDO("mysql:host=".DBHOST.";dbname=".DBNAME, DBUSER, DBPASS);
@@ -21,9 +27,8 @@ try {
     exit;
 }
 //include the user class, pass in the database connection
-include('user.php');
-include('mail.php');
-$user = new User($db);
+
+ 
 ?>
 Status API Training Shop Blog About
 © 2016 GitHub, Inc. Terms Privacy 
