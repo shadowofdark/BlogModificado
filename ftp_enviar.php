@@ -6,18 +6,8 @@
     
      $usuario = $_SESSION['user_login'];
 
+require('config.php');
 
-
-if(isset($usuario)){
-    echo "Bienvenido,",$usuario;}
-
-
-$conexion = mysqli_connect("localhost","root","1234") 
-                    or  die("Problemas en la conexion");
-
-mysqli_select_db($conexion,"wordpress") 
-                    or  die("Problemas en la selección de la base de datos");
-    
 # Comprovamos que se haya enviado algo desde el formulario
 if (is_uploaded_file($_FILES['file']['tmp_name'])) {
 # Definimos las variables
@@ -25,35 +15,42 @@ $host = "192.168.174.3";
 $port = 21;
 $user = "elio";
 $password = "1234";
-$ruta = "/home/ubuntu/archivos/";
+$ruta = "/home/elio/archivos/";
+
 $fecha = date("d") . " del " . date("m") . " de " . date("Y");
+
+
 # Realizamos la conexion con el servidor
 $conn_id = @ftp_connect($host, $port);
 if ($conn_id) {
     # Realizamos el login con nuestro usuario y contraseña
+
     if (@ftp_login($conn_id, $user, $password)) {
         # Canviamos al directorio especificado
+
         if (@ftp_chdir($conn_id, $ruta)) {
             if (!@ftp_chdir($conn_id, $ruta . "/" . $_SESSION['user_login'])) {
+
+
                 ftp_mkdir($conn_id, $ruta . "" . $_SESSION['user_login']); //echo "FC";
                 $ruta = $ruta . "" . $_SESSION['user_login'];
                 @ftp_chdir($conn_id, $ruta);
             } else {
+
                 echo $ruta = $ruta . "" . $_SESSION['user_login'] . "/";
                 @ftp_chdir($conn_id, $ruta);
             }
+
             # Subimos el fichero
             if (@ftp_put($conn_id, $_FILES["file"]["name"], $_FILES["file"]["tmp_name"], FTP_BINARY)) {
                 echo "Fichero subido correctamente";
-                
-                $insert= mysqli_query($conexion,"insert into files (direc,nombre,prop,hora,peso) values (:direc, :nombre, :prop, :hora, :peso)')";
+                $stmt = $db->prepare('INSERT INTO Files(direc, nombre, prop,hora,peso) VALUES (:direc, :nombre, :prop, :hora, :peso)');
                 $stmt->execute(array(
                     ':direc' => "" . $ruta . "" . $_FILES['file']['name'],
                     ':nombre' => $_FILES['file']['name'],
                     ':prop' => $_SESSION['user_login'],
                     ':hora' => $fecha,
                     ':peso' => round($_FILES['file']['size']/1024)));
-                echo "Datos guardados en la base de datos";
             } else
                 echo "No ha sido posible subir el fichero";
         } else
@@ -67,6 +64,5 @@ if ($conn_id) {
 }else {
 echo "Selecciona un archivo...";
 }
-echo "archivo enviado con exito!";
 header('Location: archivos.php');
 ?>
