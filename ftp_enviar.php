@@ -21,7 +21,7 @@ mysqli_select_db($conexion,"wordpress")
 # Comprovamos que se haya enviado algo desde el formulario
 if (is_uploaded_file($_FILES['file']['tmp_name'])) {
 # Definimos las variables
-$host = "192.168.1.8";
+$host = "192.168.174.3";
 $port = 21;
 $user = "elio";
 $password = "1234";
